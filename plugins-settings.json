@@ -1,0 +1,25 @@
+{
+    "2bd1c688-31c5-443e-ae25-59aa5b6431fb": {
+        "id": "d1c4138a-ad36-4535-ba40-231b142c6262",
+        "name": "REST API",
+        "designId": "c81793bc-7d64-4ff6-b806-68e0e49c988a",
+        "pluginId": "2bd1c688-31c5-443e-ae25-59aa5b6431fb",
+        "publicData": {}
+    },
+    "e93a2dfd-9b19-473e-b445-c666fed4e14a": {
+        "id": "668ce97d-394e-48d2-aeff-93536dec7d29",
+        "name": "Auth0",
+        "designId": "c81793bc-7d64-4ff6-b806-68e0e49c988a",
+        "pluginId": "e93a2dfd-9b19-473e-b445-c666fed4e14a",
+        "publicData": {
+            "domain": "dev-a28evl2o8lca1ljn.us.auth0.com",
+            "audience": "https://fuse-api.ngrok.io",
+            "M2MClientId": "rpDequTAu7scwIwv7qctXf89PDqMxSV5",
+            "SPAClientId": "fwn033dFXuhEUMhOnCXvahKkJ6jlJc6L",
+            "customDomain": "login.fusefinance.com",
+            "afterSignInPageId": "fd7ca952-e065-47b1-b1fc-295034b5d356",
+            "afterForbiddenPageId": "6de5fda0-42ca-4631-aed3-23c5b19a119e",
+            "afterNotSignInPageId": "6de5fda0-42ca-4631-aed3-23c5b19a119e"
+        }
+    }
+}
