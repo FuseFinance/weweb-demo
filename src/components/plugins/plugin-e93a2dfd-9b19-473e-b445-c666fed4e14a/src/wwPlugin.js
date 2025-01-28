@@ -83,8 +83,8 @@ export default {
             await this.client.loginWithPopup({
                 authorizationParams: {
                     screen_hint: screenHint,
+                    organization,
                 },
-                organization,
             });
             await this.setCookieSession();
             this.redirectAfterSignIn();
@@ -99,8 +99,8 @@ export default {
         return this.client.loginWithRedirect({
             authorizationParams: {
                 screen_hint: screenHint,
+                organization,
             },
-            organization,
         });
         /* wwFront:end */
     },

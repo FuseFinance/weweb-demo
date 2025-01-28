@@ -3,8 +3,8 @@ import services from './services/index.js';
 
  /* wwFront:start */
 // eslint-disable-next-line no-undef
-import plugin_e93a2dfd_9b19_473e_b445_c666fed4e14a from '@/components/plugins/plugin-e93a2dfd-9b19-473e-b445-c666fed4e14a/src/wwPlugin.js';
 import plugin_2bd1c688_31c5_443e_ae25_59aa5b6431fb from '@/components/plugins/plugin-2bd1c688-31c5-443e-ae25-59aa5b6431fb/src/wwPlugin.js';
+import plugin_e93a2dfd_9b19_473e_b445_c666fed4e14a from '@/components/plugins/plugin-e93a2dfd-9b19-473e-b445-c666fed4e14a/src/wwPlugin.js';
 /* wwFront:end */
 
 import { computed, reactive } from 'vue';
@@ -46,8 +46,8 @@ export default {
 
         /* wwFront:start */
         // eslint-disable-next-line no-undef
-        wwLib.wwPluginHelper.registerPlugin('plugin-e93a2dfd-9b19-473e-b445-c666fed4e14a', plugin_e93a2dfd_9b19_473e_b445_c666fed4e14a);
-wwLib.wwPluginHelper.registerPlugin('plugin-2bd1c688-31c5-443e-ae25-59aa5b6431fb', plugin_2bd1c688_31c5_443e_ae25_59aa5b6431fb);
+        wwLib.wwPluginHelper.registerPlugin('plugin-2bd1c688-31c5-443e-ae25-59aa5b6431fb', plugin_2bd1c688_31c5_443e_ae25_59aa5b6431fb);
+wwLib.wwPluginHelper.registerPlugin('plugin-e93a2dfd-9b19-473e-b445-c666fed4e14a', plugin_e93a2dfd_9b19_473e_b445_c666fed4e14a);
         /* wwFront:end */
 
  
