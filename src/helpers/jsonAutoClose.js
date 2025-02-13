@@ -1,4 +1,5 @@
 import { OBJ, BOOL, ARR, NULL, parse } from 'partial-json';
+import { jsonrepair } from 'jsonrepair';
 
 /**
  * Parse a partial JSON string that might be streamed from an LLM
@@ -12,5 +13,9 @@ import { OBJ, BOOL, ARR, NULL, parse } from 'partial-json';
  * autocompleteJson('{"') // Returns {}
  */
 export function parsePartialJson(partialJson) {
-    return parse(partialJson, OBJ | ARR | BOOL | NULL);
+    try {
+        return parse(partialJson, OBJ | ARR | BOOL | NULL);
+    } catch (error) {
+        return jsonrepair(partialJson);
+    }
 }

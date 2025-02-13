@@ -2,7 +2,7 @@ import { onUnmounted, computed, watch } from 'vue';
 import { executeWorkflow } from '@/_common/helpers/code/workflows';
 import { getComponentBaseUid } from '@/_common/helpers/component/component';
 
-export function useLibraryComponentActions({ uid, componentId }, { context, executionContext }) {
+export function useLibraryComponentActions({ uid, componentId, repeatIndex }, { context, executionContext }) {
     const baseUid = getComponentBaseUid('libraryComponent', uid);
 
     function executeFunction(workflowId, parameters) {
@@ -38,11 +38,17 @@ export function useLibraryComponentActions({ uid, componentId }, { context, exec
         if (context?.component) {
             if (!context.component.localComponentActionsFn.libraryComponents[uid])
                 context.component.localComponentActionsFn.libraryComponents[uid] = {};
-            context.component.localComponentActionsFn.libraryComponents[uid][componentId] = executeFunction;
+            context.component.localComponentActionsFn.libraryComponents[uid][componentId] = {
+                repeatIndex,
+                executeFunction,
+            };
         } else {
             if (!wwLib.globalVariables.globalComponentActionsFn.libraryComponents[uid])
                 wwLib.globalVariables.globalComponentActionsFn.libraryComponents[uid] = {};
-            wwLib.globalVariables.globalComponentActionsFn.libraryComponents[uid][componentId] = executeFunction;
+            wwLib.globalVariables.globalComponentActionsFn.libraryComponents[uid][componentId] = {
+                repeatIndex,
+                executeFunction,
+            };
         }
     }
 
@@ -64,7 +70,7 @@ export function useLibraryComponentActions({ uid, componentId }, { context, exec
     });
 }
 
-export function useComponentActions({ uid, componentId, type }, { configuration, componentRef, context }) {
+export function useComponentActions({ uid, componentId, type, repeatIndex }, { configuration, componentRef, context }) {
     if (!configuration.actions) return;
 
     function executeFunction(actionName, args) {
@@ -78,11 +84,17 @@ export function useComponentActions({ uid, componentId, type }, { configuration,
     } else if (context?.component) {
         if (!context.component.localComponentActionsFn.elements[uid])
             context.component.localComponentActionsFn.elements[uid] = {};
-        context.component.localComponentActionsFn.elements[uid][componentId] = executeFunction;
+        context.component.localComponentActionsFn.elements[uid][componentId] = {
+            repeatIndex,
+            executeFunction,
+        };
     } else {
         if (!wwLib.globalVariables.globalComponentActionsFn.elements[uid])
             wwLib.globalVariables.globalComponentActionsFn.elements[uid] = {};
-        wwLib.globalVariables.globalComponentActionsFn.elements[uid][componentId] = executeFunction;
+        wwLib.globalVariables.globalComponentActionsFn.elements[uid][componentId] = {
+            repeatIndex,
+            executeFunction,
+        };
     }
 
     onUnmounted(() => {
@@ -104,13 +116,24 @@ export function useComponentActions({ uid, componentId, type }, { configuration,
 }
 
 // TODO: log when component not found??
-export function executeComponentAction(action, { context }, args) {
+export function executeComponentAction(action, { context }, args = []) {
     if (!action.uid) return null;
+    action.category = action.category || 'elements';
     const functions =
         context?.component?.localComponentActionsFn?.[action.category]?.[action.uid] ||
         wwLib.globalVariables.globalComponentActionsFn[action.category][action.uid];
     if (!functions) return null;
     if (typeof functions === 'function') functions[action.id](action.name, args);
     const keys = Object.keys(functions);
-    return keys.length ? functions[keys[0]](action.actionName, args) : null;
+    let executeFunction = null;
+    if (keys.length && action.repeatIndex) {
+        for (const key in functions) {
+            if (functions[key].repeatIndex === action.repeatIndex) {
+                executeFunction = functions[key].executeFunction;
+                break;
+            }
+        }
+    }
+    if (!executeFunction) executeFunction = functions[keys[0]].executeFunction;
+    return executeFunction(action.actionName, args) || null;
 }

@@ -26,7 +26,7 @@ export default {
                 index,
                 repeatIndex: index,
                 isACopy: computed(() => (parentBindingContext && parentBindingContext.isACopy) || props.index > 0),
-                repeatedItems: toRef(props, 'repeatedItems'),
+                repeatedItems: toRef(props, 'repeatedItems'), // Used for counting repeat in Navigator component
             });
 
             provide('bindingContext', bindingContext);

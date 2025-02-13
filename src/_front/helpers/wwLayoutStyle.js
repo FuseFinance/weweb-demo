@@ -1,7 +1,7 @@
 import { getDisplayValue } from '@/_common/helpers/component/component';
 
-export function getLayoutStyleFromContent(content, style, componentConfiguration) {
-    const display = getDisplayValue(style.display, componentConfiguration);
+export function getLayoutStyleFromContent(content, style, componentConfiguration, context) {
+    const display = getDisplayValue(style.display, componentConfiguration, context);
 
     const layoutStyle = { display };
 
@@ -43,6 +43,13 @@ export function getLayoutStyleFromContent(content, style, componentConfiguration
         if (gridTemplateRows) layoutStyle.gridTemplateRows = gridTemplateRows;
         if (gridColumnGap) layoutStyle.columnGap = gridColumnGap;
         if (gridRowGap) layoutStyle.rowGap = gridRowGap;
+    } else if (display === 'table') {
+        const tableLayout = content['_ww-table_layout'];
+        const tableBorderCollapse = content['_ww-table_borderCollapse'];
+        const tableBorderSpacing = content['_ww-table_borderSpacing'];
+        if (tableLayout) layoutStyle.tableLayout = tableLayout;
+        if (tableBorderCollapse) layoutStyle.borderCollapse = tableBorderCollapse;
+        if (tableBorderSpacing) layoutStyle.borderSpacing = tableBorderSpacing;
     } else if (display === 'block' || display === 'inline-block') {
         layoutStyle.height = '100%';
         if (style.textAlign) layoutStyle.textAlign = style.textAlign;

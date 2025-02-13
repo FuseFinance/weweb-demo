@@ -39,8 +39,15 @@ export default {
         const componentContent = inject('componentContent');
         const componentStyle = inject('componentStyle');
         const componentConfiguration = inject('componentConfiguration');
+        const componentWwProps = inject('componentWwProps');
+        const componentContext = {
+            content: componentContent,
+            wwProps: componentWwProps,
+        };
 
-        return computed(() => getLayoutStyleFromContent(componentContent, componentStyle, componentConfiguration));
+        return computed(() =>
+            getLayoutStyleFromContent(componentContent, componentStyle, componentConfiguration, componentContext)
+        );
     },
 
     /**
@@ -155,8 +162,7 @@ export default {
                     link.href = rawLink.href;
 
                     if (typeof link.href !== 'string') {
-                        wwLib.wwLog.error('Link href is not a string', link.href);
-                        break;
+                        link.href = '';
                     }
 
                     /* wwFront:start */
@@ -322,6 +328,7 @@ export default {
                         //QUERY
                         if (normalizedLink.value.query && normalizedLink.value.query.length) {
                             const query = normalizedLink.value.query
+                                ?.filter(query => !!query)
                                 .map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`)
                                 .join('&');
                             properties.href = `${properties.href}${

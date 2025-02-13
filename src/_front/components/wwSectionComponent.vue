@@ -156,13 +156,12 @@ export default {
             isRendering,
             containerStyle: computed(() => {
                 let _style = {
-                    height: style.height || 'auto',
+                    height: getComponentSize(style.height, 'auto'),
                     aspectRatio: style.aspectRatio,
                     margin: style.margin,
                     zIndex: style.zIndex || 'unset',
                     overflow: style.overflow,
                     opacity: style.opacity,
-                    // justifyContent: content['_ww-layout_justifyContent'] || style.align || 'flex-start',
                 };
 
                 //MIN-HEIGHT
@@ -171,15 +170,19 @@ export default {
                 _style.maxHeight = getComponentSize(style.maxHeight);
 
                 //Manage display
-                _style.display = getDisplayValue(style.display, configuration);
+                _style.display = getDisplayValue(style.display, configuration, {
+                    content,
+                });
 
-                if (style.position === 'sticky') {
+                if (style.position === 'sticky' || style.position === 'fixed' || style.position === 'absolute') {
                     _style.position = style.position;
                     const hasValue = style.top || style.bottom || style.left || style.right;
                     _style.top = style.top || (hasValue ? null : '0px');
                     _style.bottom = style.bottom;
                     _style.left = style.left;
                     _style.right = style.right;
+                    _style.width =
+                        style.position !== 'sticky' || !hasValue ? getComponentSize(style.width, undefined) : undefined;
                 }
 
                 _style.background = getBackgroundStyle(style);
@@ -188,6 +191,13 @@ export default {
                 if ( style.cursor) {
                     _style.cursor = style.cursor;
                 }
+
+                // OTHER
+                ['transition', 'transform'].forEach(prop => {
+                    if (style[prop]) {
+                        _style[prop] = style[prop];
+                    }
+                });
 
                 //CUSTOM CSS
                 for (const prop in style.customCss || {}) {
@@ -284,7 +294,6 @@ export default {
             this.removeInternalState('_wwHover', true);
         },
      },
-    /* wwFront:end */
 };
 </script>
 

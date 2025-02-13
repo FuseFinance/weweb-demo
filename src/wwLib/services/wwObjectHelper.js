@@ -18,11 +18,6 @@ export default class wwObjectHelper {
             'ww-expand': '53401515-b694-4c79-a88d-abeecb1de562',
             'ww-tabs': 'fa33562c-495c-4d2e-bc8f-cf5ec449bf6e',
             'navigation-menu': 'fb3e0024-f017-4193-a6a1-bc2eed330d1d',
-            'ww-form-container': '25edb26f-a365-4447-8de5-4964f9f7dc77',
-            'ww-form-checkbox': 'ff42ffd0-0250-44c5-9f35-c027bcf4e3ce',
-            'ww-form-input': 'aeb78b9a-6fb6-4c49-931d-faedcfad67ba',
-            'ww-form-dropdown': 'b10e81a1-a2b7-4597-8625-60fe0b1722e1',
-            'ww-form-radio': 'd121c5c2-ab40-420d-b5e4-c50537dfe647',
         };
     }
 
@@ -197,6 +192,13 @@ export default class wwObjectHelper {
                             parentId: parent.uid,
                             childType: 'single',
                             childPath: key,
+                        };
+                    } else if (content[key]?.repeatable?.length && content[key]?.repeatable[0].uid === uidToFind) {
+                        return {
+                            parentId: parent.uid,
+                            childType: 'array',
+                            childPath: `${key}.repeatable`,
+                            childIndex: 0,
                         };
                     }
                 }

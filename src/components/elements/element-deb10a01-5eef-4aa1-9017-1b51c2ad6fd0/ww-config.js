@@ -7,13 +7,18 @@ export default {
         label: { en: 'Form Input', fr: 'Entrée de Formulaire' },
         icon: 'text-input',
         customSettingsPropertiesOrder: [
+            'formInfobox',
+            ['fieldName', 'customValidation', 'validation'],
+            'type',
             'value',
-            ['placeholder'],
-            ['readonly', 'required'],
-            ['debounce', 'debounceDelay'],
+            'placeholder',
+            'readonly',
+            'required',
+            'autocomplete',
+            'debounce',
+            'debounceDelay',
         ],
         customStylePropertiesOrder: [
-            'type',
             'placeholderColor',
             [
                 'precision',
@@ -29,6 +34,21 @@ export default {
                 'resize',
             ],
         ],
+        hint: (_, sidePanelContent) => {
+            if (!sidePanelContent.parentSelection) return null;
+            const { header, text, button, args } = sidePanelContent.parentSelection;
+            const sections = ['style', 'settings'];
+            return sections.map(section => ({
+                section,
+                header: header,
+                text: text,
+                button: {
+                    text: button,
+                    action: 'selectParent',
+                    args,
+                },
+            }));
+        },
     },
     states: ['focus', 'readonly'],
     actions: [{ label: 'Focus element', action: 'focusInput' }],
@@ -239,6 +259,36 @@ export default {
             section: 'settings',
             defaultValue: false,
             bindable: true,
+        },
+        fieldName: {
+            label: 'Field name',
+            section: 'settings',
+            type: 'Text',
+            defaultValue: '',
+            bindable: true,
+            hidden: (_, sidePanelContent) => {
+                return !sidePanelContent.form?.uid;
+            },
+        },
+        customValidation: {
+            label: 'Custom validation',
+            section: 'settings',
+            type: 'OnOff',
+            defaultValue: false,
+            bindable: true,
+            hidden: (_, sidePanelContent) => {
+                return !sidePanelContent.form?.uid;
+            },
+        },
+        validation: {
+            label: 'Validation',
+            section: 'settings',
+            type: 'Formula',
+            defaultValue: '',
+            bindable: true,
+            hidden: (content, sidePanelContent) => {
+                return !sidePanelContent.form?.uid || !content.customValidation;
+            },
         },
     },
 };

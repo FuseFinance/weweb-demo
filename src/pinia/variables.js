@@ -2,7 +2,6 @@ import { ref, shallowReactive, reactive, effectScope } from 'vue';
 import { defineStore } from 'pinia';
 import set from 'lodash.set';
 import { computed } from 'vue';
-import { escapeHTMLInObject } from '@/_common/helpers/htmlEscaper';
 
 export const useVariablesStore = defineStore('variables', () => {
     const website = shallowReactive({});

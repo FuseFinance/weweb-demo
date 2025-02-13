@@ -37,19 +37,6 @@ export async function initializeData(toRoute, forceReset = false) {
         wwLib.$emit('reset-library-variables');
     }
 
-    // Object.keys(variablesStore.website).forEach(id => {
-    //     registerVariable(id, 'website');
-    // });
-    // Object.keys(variablesStore.components).forEach(id => {
-    //     registerVariable(id, 'component');
-    // });
-    // Object.keys(variablesStore.plugins).forEach(id => {
-    //     registerVariable(id, 'plugin');
-    // });
-    // Object.keys(wwLib.$store.getters['data/getPageParameterVariables']).forEach(id => {
-    //     registerVariable(id, 'page');
-    // });
-
     /*=================================/
     / ONLOAD BEFORE FETCH              /
     /=================================*/

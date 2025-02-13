@@ -72,20 +72,20 @@ export default {
         const style = {
             ...(content['_ww-text_font']
                 ? {
-                    fontSize: 'unset',
-                    fontFamily: 'unset',
-                    lineHeight: 'unset',
-                    fontWeight: 'unset',
-                    fontStyle: 'unset',
-                    font: content['_ww-text_font'] || '',
-                }
+                      fontSize: 'unset',
+                      fontFamily: 'unset',
+                      lineHeight: 'unset',
+                      fontWeight: 'unset',
+                      fontStyle: 'unset',
+                      font: content['_ww-text_font'] || '',
+                  }
                 : {
-                    fontSize: content['_ww-text_fontSize'],
-                    fontFamily: content['_ww-text_fontFamily'] || 'var(--ww-default-font-family)',
-                    lineHeight: content['_ww-text_lineHeight'],
-                    fontWeight: content['_ww-text_fontWeight'],
-                    fontStyle: content['_ww-text_fontStyle'],
-                }),
+                      fontSize: content['_ww-text_fontSize'],
+                      fontFamily: content['_ww-text_fontFamily'] || 'var(--ww-default-font-family)',
+                      lineHeight: content['_ww-text_lineHeight'],
+                      fontWeight: content['_ww-text_fontWeight'],
+                      fontStyle: content['_ww-text_fontStyle'],
+                  }),
             textAlign: content['_ww-text_textAlign'],
             color: content['_ww-text_color'],
             textTransform: content['_ww-text_textTransform'],

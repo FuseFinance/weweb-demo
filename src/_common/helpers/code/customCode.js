@@ -401,7 +401,9 @@ export function getValue(rawValue, context, { event, recursive = true, defaultUn
     if (rawValue === undefined) return _.cloneDeep(defaultUndefined);
     if (!rawValue) return rawValue;
 
-    if (rawValue.__wwtype === 'f') {
+    if (rawValue.__wwtype === 'd') {
+        return rawValue.data.map(raw => getValue(raw, context, { event, args }));
+    } else if (rawValue.__wwtype === 'f') {
         return getFormulaValue(
             { code: rawValue.code, filter: rawValue.filter, sort: rawValue.sort, __wwmap: rawValue.__wwmap },
             context || {},

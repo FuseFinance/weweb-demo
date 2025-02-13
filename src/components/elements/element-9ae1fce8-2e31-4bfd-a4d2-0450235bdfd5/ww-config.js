@@ -40,9 +40,11 @@ export default {
                 'img',
                 'checkbox',
                 'table',
-            ]
+            ],
         ],
         customSettingsPropertiesOrder: [
+            'formInfobox',
+            ['fieldName', 'customValidation', 'validation'],
             'readonly',
             'editable',
             'hideMenu',
@@ -227,7 +229,7 @@ export default {
         {
             label: 'Delete Table',
             action: 'deleteTable',
-        }
+        },
     ],
     properties: {
         readonly: {
@@ -1563,6 +1565,31 @@ export default {
                 ],
             },
             defaultValue: true,
+        },
+
+        fieldName: {
+            label: 'Field name',
+            section: 'settings',
+            type: 'Text',
+            defaultValue: '',
+            bindable: true,
+            hidden: (_, sidePanelContent) => !sidePanelContent.form?.uid,
+        },
+        customValidation: {
+            label: 'Custom validation',
+            section: 'settings',
+            type: 'OnOff',
+            defaultValue: false,
+            bindable: true,
+            hidden: (_, sidePanelContent) => !sidePanelContent.form?.uid,
+        },
+        validation: {
+            label: 'Validation',
+            section: 'settings',
+            type: 'Formula',
+            defaultValue: '',
+            bindable: true,
+            hidden: (content, sidePanelContent) => !sidePanelContent.form?.uid || !content.customValidation,
         },
     },
 };

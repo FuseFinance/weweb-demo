@@ -15,6 +15,7 @@ export function useComponentData({
     currentStates,
     context = {},
     libraryComponentDataRef,
+    wwProps = {},
  }) {
     let content = {};
     let rawContent = {};
@@ -139,6 +140,7 @@ export function useComponentData({
         provide('componentRawContent', rawContent);
         provide('componentConfiguration', configuration);
         provide('componentData', component);
+        provide('componentWwProps', wwProps);
     }
 
     return {

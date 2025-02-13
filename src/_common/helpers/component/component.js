@@ -133,12 +133,19 @@ export function isComponentDisplayed(displayValue) {
 
 export const DEFAULT_DISPLAY_VALUES = ['block', 'inline-block'];
 
-export function getDisplayValue(displayValue, configuration) {
+export function getDisplayAllowedValues(configuration, context /* {content, wwProps} */) {
+    if (typeof configuration?.options?.displayAllowedValues === 'function') {
+        return configuration?.options?.displayAllowedValues(context?.content, context?.wwProps);
+    }
+    return configuration?.options?.displayAllowedValues || DEFAULT_DISPLAY_VALUES;
+}
+
+export function getDisplayValue(displayValue, configuration, context) {
     const isDisplayed = isComponentDisplayed(displayValue);
 
     if (!isDisplayed) return 'none';
 
-    const allowedValues = configuration?.options?.displayAllowedValues || DEFAULT_DISPLAY_VALUES;
+    const allowedValues = getDisplayAllowedValues(configuration, context);
 
     if (typeof displayValue === 'string' && allowedValues.includes(displayValue.toLowerCase())) {
         return displayValue.toLowerCase();
@@ -147,8 +154,8 @@ export function getDisplayValue(displayValue, configuration) {
     return allowedValues[0];
 }
 
-export function doesComponentSupportDisplayType(configuration, displayType) {
-    return configuration?.options?.displayAllowedValues?.includes?.(displayType);
+export function doesComponentSupportDisplayType(configuration, displayType, context) {
+    return getDisplayAllowedValues(configuration, context).includes(displayType);
 }
 
 export function getComponentSize(size, defaultSize = 'unset') {

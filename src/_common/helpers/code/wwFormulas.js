@@ -55,8 +55,9 @@ export const _wwFormulas = {
         return Math.round(value * multiplier) / multiplier;
     },
     length(arr) {
+        if (typeof arr === 'string') return arr.length;
         arr = wwLib.wwUtils.getDataFromCollection(arr);
-        if (!Array.isArray(arr)) throw 'First parameter must be an array (or collection)';
+        if (!Array.isArray(arr)) throw 'First parameter must be an array (or collection) or a string';
         return arr.length;
     },
     keys(obj) {

@@ -245,14 +245,20 @@ export async function executeWorkflowAction(
                 const path = action.usePath ? getValue(action.path || '', context, { event, recursive: false }) : null;
                 const index = getValue(action.index || 0, context, { event, recursive: false });
 
-                if (action.internal) {
+                const variablesStore = useVariablesStore(wwLib.$pinia);
+                const innerVariables =
+                    wwLib.$store.getters['libraries/getComponents'][context?.component?.baseUid]?.inner?.variables ||
+                    {};
+                const innerComponentVariables = context?.component?.componentVariablesConfiguration || {};
+
+                if (innerVariables[action.varId] || innerComponentVariables[action.varId]) {
                     result = context?.component?.methods?.updateVariable(action.varId, value, {
                         path,
                         index,
                         arrayUpdateType: action.arrayUpdateType,
                         workflowContext: { workflow, actionId: action.id, executionContext },
                     });
-                } else {
+                } else if (variablesStore.getConfiguration(action.varId)) {
                     result = wwLib.wwVariable.updateValue(action.varId, value, {
                         path,
                         index,
@@ -613,7 +619,14 @@ export async function executeWorkflowAction(
                     `${action.actionName} triggered on ${getComponentLabel(action.type, action.uid)}`
                 );
 
-                result = executeComponentAction(action, { context }, argsValues);
+                result = executeComponentAction(
+                    {
+                        ...action,
+                        repeatIndex: context?.item?.repeatIndex || null,
+                    },
+                    { context },
+                    argsValues
+                );
 
                 break;
             }
@@ -664,8 +677,9 @@ export async function executeWorkflowAction(
                 break;
             }
             case 'wait': {
-                if (action.value === undefined) throw new Error('No time delay defined.');
-                const delay = getValue(action.value, context, { event });
+                if (action.value === undefined && action.duration === undefined)
+                    throw new Error('No time delay defined.');
+                const delay = getValue(action.value || action.duration, context, { event });
                 logActionInformation('info', `Waiting ${delay}ms ⏳`);
                 await new Promise(resolve => setTimeout(resolve, delay));
                 logActionInformation('info', '⌛ Stop waiting');
